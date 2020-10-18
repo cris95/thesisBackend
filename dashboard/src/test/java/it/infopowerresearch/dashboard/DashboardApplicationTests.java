@@ -10,10 +10,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import it.infopowerresearch.dashboard.bean.AlertWidget;
 import it.infopowerresearch.dashboard.bean.Dashboard;
 import it.infopowerresearch.dashboard.bean.User;
 import it.infopowerresearch.dashboard.bean.Widget;
 import it.infopowerresearch.dashboard.bean.WidgetTemplate;
+import it.infopowerresearch.dashboard.dao.AlertWidgetDAO;
 import it.infopowerresearch.dashboard.dao.DashboardDAO;
 import it.infopowerresearch.dashboard.dao.UserDAO;
 import it.infopowerresearch.dashboard.dao.WidgetDAO;
@@ -33,6 +35,9 @@ class DashboardApplicationTests {
 
 	@Autowired
 	private WidgetTemplateDAO widgetTemplateDAO;
+	
+	@Autowired
+	private AlertWidgetDAO alertWidgetDAO;
 
 	@Test
 	void contextLoads() {
@@ -44,32 +49,16 @@ class DashboardApplicationTests {
 		u.setUsername("admin");
 		u.setPassword("admin");
 
-		// userDAO.save(u);
+		userDAO.save(u);
 
 		u = userDAO.findByUsername("admin");
 
 		Dashboard d = new Dashboard();
-		d.setName("dashboard2");
+		d.setName("dashboard1");
 
 		d.setUser(u);
 
 		d.setWidgets(new HashSet<Widget>());
-
-		Widget w = new Widget();
-		w.setCols(1);
-		w.setRows(1);
-		w.setX(1);
-		w.setY(1);
-
-		d.addWidget(w);
-
-		w = new Widget();
-		w.setCols(1);
-		w.setRows(3);
-		w.setX(3);
-		w.setY(3);
-
-		d.addWidget(w);
 
 //		dashboardDAO.save(d);
 
@@ -78,24 +67,25 @@ class DashboardApplicationTests {
 	@Test
 	void widgets() {
 		WidgetTemplate w = new WidgetTemplate();
-		w.setType("switch");
+		w.setType("alert");
 		w.setCols(2);
-		w.setRows(1);
-		w.setDescription("switch on/off");
+		w.setRows(2);
+		w.setDescription("monitor the cpu temperature");
 
-		//widgetTemplateDAO.save(w);
+		widgetTemplateDAO.save(w);
 
-		w = new WidgetTemplate();
-		w.setType("pie chart");
-		w.setCols(3);
-		w.setRows(3);
-		w.setDescription("pie chart");
+		w = widgetTemplateDAO.findById(1l).get();
 
-		//widgetTemplateDAO.save(w);
-
-		Set<WidgetTemplate> widgets = new HashSet<>((Collection<? extends WidgetTemplate>) widgetTemplateDAO.findAll());
+		AlertWidget a = new AlertWidget();
+		a.setHigh(80);
+		a.setLow(60);
+		a.setTemplate(w);
 		
-		assertEquals(2, widgets.size());
+		alertWidgetDAO.save(a);
+
+//		Set<WidgetTemplate> widgets = new HashSet<>((Collection<? extends WidgetTemplate>) widgetTemplateDAO.findAll());
+//
+//		assertEquals(1, widgets.size());
 	}
 
 }

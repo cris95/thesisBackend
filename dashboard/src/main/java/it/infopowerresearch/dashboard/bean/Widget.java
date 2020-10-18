@@ -7,13 +7,10 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "widget")
+@Table(name = "widgets")
 public class Widget extends AbstractIdentifiedBean {
 
 	private static final long serialVersionUID = 1L;
-
-	@ManyToOne
-	private WidgetTemplate template;
 
 	private int x;
 
@@ -27,12 +24,23 @@ public class Widget extends AbstractIdentifiedBean {
 	@JsonIgnore
 	private Dashboard dashboard;
 
-	public String getType() {
-		return type;
+	@ManyToOne
+	private WidgetTemplate template;
+
+	public int getRows() {
+		return rows;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setRows(int rows) {
+		this.rows = rows;
+	}
+
+	public int getCols() {
+		return cols;
+	}
+
+	public void setCols(int cols) {
+		this.cols = cols;
 	}
 
 	public int getX() {
@@ -51,28 +59,20 @@ public class Widget extends AbstractIdentifiedBean {
 		this.y = y;
 	}
 
-	public int getRows() {
-		return rows;
-	}
-
-	public void setRows(int rows) {
-		this.rows = rows;
-	}
-
-	public int getCols() {
-		return cols;
-	}
-
-	public void setCols(int cols) {
-		this.cols = cols;
-	}
-
 	public Dashboard getDashboard() {
 		return dashboard;
 	}
 
 	public void setDashboard(Dashboard dashboard) {
 		this.dashboard = dashboard;
+	}
+
+	public WidgetTemplate getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(WidgetTemplate template) {
+		this.template = template;
 	}
 
 	@Override

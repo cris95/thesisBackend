@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.infopowerresearch.dashboard.bean.AlertWidget;
 import it.infopowerresearch.dashboard.bean.Dashboard;
 import it.infopowerresearch.dashboard.bean.User;
 import it.infopowerresearch.dashboard.bean.WidgetTemplate;
 import it.infopowerresearch.dashboard.managers.DashboardManager;
 import it.infopowerresearch.dashboard.managers.UserManager;
+import it.infopowerresearch.dashboard.managers.WidgetManager;
 
 @RestController
 @CrossOrigin("*")
@@ -28,6 +30,9 @@ public class DashboardController {
 
 	@Autowired
 	DashboardManager dashboardManager;
+	
+	@Autowired
+	WidgetManager widgetManager;
 
 	@PostMapping("/login")
 	public User login(final String username, final HttpEntity<String> password) {
@@ -35,17 +40,17 @@ public class DashboardController {
 	}
 
 	@GetMapping("/getUserDashboards")
-	public Set<Dashboard> getUserDashboards(long userId) {
+	public Set<Dashboard> getUserDashboards(final long userId) {
 		return dashboardManager.getUserDashboards(userId);
 	}
 	
 	@GetMapping("/createDashboard")
-	public Set<Dashboard> createDashboard(long userId) {
+	public Set<Dashboard> createDashboard(final long userId) {
 		return dashboardManager.createDashboard(userId);
 	}
 
 	@GetMapping("/getDashboard")
-	public Dashboard getDashboard(long id) {
+	public Dashboard getDashboard(final long id) {
 		return dashboardManager.getDashboard(id);
 	}
 
@@ -55,7 +60,7 @@ public class DashboardController {
 	}
 
 	@GetMapping("/deleteDashboard")
-	public boolean deleteDashboard(long id) {
+	public boolean deleteDashboard(final long id) {
 		return dashboardManager.deleteDashboard(id);
 	}
 
@@ -63,5 +68,11 @@ public class DashboardController {
 	public Set<WidgetTemplate> getAllWidgets() {
 		return dashboardManager.getAllWidgets();
 	}
+	
+	@GetMapping("/getTemperature")
+	public int getTemperature(final long id) {
+		return widgetManager.getTemperature(id);
+	}
+	
 
 }

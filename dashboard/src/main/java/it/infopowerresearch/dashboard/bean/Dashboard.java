@@ -11,7 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "dashboard")
+@Table(name = "dashboards")
 public class Dashboard extends AbstractIdentifiedBean {
 
 	private static final long serialVersionUID = 1L;
