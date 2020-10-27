@@ -1,31 +1,29 @@
 package it.infopowerresearch.dashboard.bean;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "alert_widgets")
-public class AlertWidget extends AbstractIdentifiedBean{
+@Table(name = "chart_widgets")
+public class ChartWidget extends AbstractIdentifiedBean {
 
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne
 	private WidgetTemplate template;
 
+	private String type;
+
 	private String label;
 
 	private String url;
-
+	
 	@Transient
-	private int value;
-
-	private int high;
-
-	private int low;
-
-	private int refreshTime;
+	private List<Integer> values;
 
 	public WidgetTemplate getTemplate() {
 		return template;
@@ -33,6 +31,14 @@ public class AlertWidget extends AbstractIdentifiedBean{
 
 	public void setTemplate(WidgetTemplate template) {
 		this.template = template;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getLabel() {
@@ -51,37 +57,12 @@ public class AlertWidget extends AbstractIdentifiedBean{
 		this.url = url;
 	}
 
-	public int getValue() {
-		return value;
+	public List<Integer> getValues() {
+		return values;
 	}
 
-	public void setValue(int value) {
-		this.value = value;
-	}
-
-	public int getHigh() {
-		return high;
-
-	}
-
-	public void setHigh(int high) {
-		this.high = high;
-	}
-
-	public int getLow() {
-		return low;
-	}
-
-	public void setLow(int low) {
-		this.low = low;
-	}
-
-	public int getRefreshTime() {
-		return refreshTime;
-	}
-
-	public void setRefreshTime(int refreshTime) {
-		this.refreshTime = refreshTime;
+	public void setValues(List<Integer> values) {
+		this.values = values;
 	}
 
 	@Override

@@ -10,11 +10,8 @@ public class WidgetTemplate extends AbstractIdentifiedBean {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Column(unique = true)
 	private String type;
 
-	private String url;
-	
 	private int rows;
 	
 	private int cols;
@@ -30,15 +27,7 @@ public class WidgetTemplate extends AbstractIdentifiedBean {
 	public void setType(String type) {
 		this.type = type;
 	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
+	
 	public int getRows() {
 		return rows;
 	}

@@ -1,5 +1,6 @@
 package it.infopowerresearch.dashboard.controller;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.infopowerresearch.dashboard.bean.AlertWidget;
+import it.infopowerresearch.dashboard.bean.ButtonWidget;
+import it.infopowerresearch.dashboard.bean.ChartWidget;
 import it.infopowerresearch.dashboard.bean.Dashboard;
 import it.infopowerresearch.dashboard.bean.User;
 import it.infopowerresearch.dashboard.bean.WidgetTemplate;
@@ -30,7 +33,7 @@ public class DashboardController {
 
 	@Autowired
 	DashboardManager dashboardManager;
-	
+
 	@Autowired
 	WidgetManager widgetManager;
 
@@ -43,7 +46,7 @@ public class DashboardController {
 	public Set<Dashboard> getUserDashboards(final long userId) {
 		return dashboardManager.getUserDashboards(userId);
 	}
-	
+
 	@GetMapping("/createDashboard")
 	public Set<Dashboard> createDashboard(final long userId) {
 		return dashboardManager.createDashboard(userId);
@@ -68,11 +71,30 @@ public class DashboardController {
 	public Set<WidgetTemplate> getAllWidgets() {
 		return dashboardManager.getAllWidgets();
 	}
-	
-	@GetMapping("/getTemperature")
-	public int getTemperature(final long id) {
-		return widgetManager.getTemperature(id);
+
+	@GetMapping("/getButtonWidget")
+	public ButtonWidget getButtonWidget(final long templateId) {
+		return widgetManager.getButtonWidget(templateId);
 	}
 	
+	@GetMapping("/getAlertWidget")
+	public AlertWidget getAlertWidget(final long templateId) {
+		return widgetManager.getAlertWidget(templateId);
+	}
+
+	@GetMapping("/getTemperature")
+	public AlertWidget getTemperature(final long id) {
+		return widgetManager.getTemperature(id);
+	}
+
+	@GetMapping("/switchValue")
+	public int switchValue(final long id, final boolean value) {
+		return widgetManager.switchValue(id, value);
+	}
+
+	@GetMapping("/getData")
+	public ChartWidget getData(final long id) {
+		return widgetManager.getData(id);
+	}
 
 }
