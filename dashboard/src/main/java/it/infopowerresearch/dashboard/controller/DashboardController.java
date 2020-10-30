@@ -1,6 +1,8 @@
 package it.infopowerresearch.dashboard.controller;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -16,6 +18,7 @@ import it.infopowerresearch.dashboard.bean.AlertWidget;
 import it.infopowerresearch.dashboard.bean.ButtonWidget;
 import it.infopowerresearch.dashboard.bean.ChartWidget;
 import it.infopowerresearch.dashboard.bean.Dashboard;
+import it.infopowerresearch.dashboard.bean.SwitchWidget;
 import it.infopowerresearch.dashboard.bean.User;
 import it.infopowerresearch.dashboard.bean.WidgetTemplate;
 import it.infopowerresearch.dashboard.managers.DashboardManager;
@@ -67,9 +70,29 @@ public class DashboardController {
 		return dashboardManager.deleteDashboard(id);
 	}
 
-	@GetMapping("/getAllWidgets")
-	public Set<WidgetTemplate> getAllWidgets() {
-		return dashboardManager.getAllWidgets();
+	@GetMapping("/getAllWidgetTemplates")
+	public Set<WidgetTemplate> getAllWidgetTemplates() {
+		return dashboardManager.getAllWidgetTemplates();
+	}
+	
+	@GetMapping("/getAlertWidgets")
+	public Set<AlertWidget> getAlertWidgets(final long[] ids){
+		return widgetManager.getAlertWidgets(ids);
+	}
+	
+	@GetMapping("/getChartWidgets")
+	public Set<ChartWidget> getChartWidgets(final long[] ids){
+		return widgetManager.getChartWidgets(ids);
+	}
+	
+	@GetMapping("/getAlertsData")
+	public Map<Long, Integer> getAlertsData(final long[] ids){
+		return widgetManager.getAlertsData(ids);
+	}
+	
+	@GetMapping("/getChartsData")
+	public Map<Long, List<Integer>> getChartsData(final long[] ids){
+		return widgetManager.getChartsData(ids);
 	}
 
 	@GetMapping("/getButtonWidget")
@@ -77,24 +100,30 @@ public class DashboardController {
 		return widgetManager.getButtonWidget(templateId);
 	}
 	
+	@GetMapping("/getSwitchWidget")
+	public SwitchWidget getSwitchWidget(final long templateId) {
+		return widgetManager.getSwitchWidget(templateId);
+	}
+	
 	@GetMapping("/getAlertWidget")
 	public AlertWidget getAlertWidget(final long templateId) {
 		return widgetManager.getAlertWidget(templateId);
 	}
 
-	@GetMapping("/getTemperature")
-	public AlertWidget getTemperature(final long id) {
-		return widgetManager.getTemperature(id);
+	@GetMapping("/getChartWidget")
+	public ChartWidget getChartWidget(final long templateId) {
+		return widgetManager.getChartWidget(templateId);
 	}
 
 	@GetMapping("/switchValue")
 	public int switchValue(final long id, final boolean value) {
 		return widgetManager.switchValue(id, value);
 	}
-
-	@GetMapping("/getData")
-	public ChartWidget getData(final long id) {
-		return widgetManager.getData(id);
+	
+	@GetMapping("clickButtonWidget")
+	public int clickButtonWidget(final long id) {
+		return widgetManager.clickButtonWidget(id);
 	}
+
 
 }

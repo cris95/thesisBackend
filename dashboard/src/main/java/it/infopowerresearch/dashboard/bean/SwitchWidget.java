@@ -1,32 +1,22 @@
 package it.infopowerresearch.dashboard.bean;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
-@Table(name = "chart_widgets")
-public class ChartWidget extends AbstractIdentifiedBean {
+@Table(name = "switch_widgets")
+public class SwitchWidget  extends AbstractIdentifiedBean{
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@ManyToOne
 	private WidgetTemplate template;
-
-	private String type;
-
+	
 	private String label;
 
 	private String url;
 	
-	private int refreshTime;
-	
-	@Transient
-	private List<Integer> values;
-
 	public WidgetTemplate getTemplate() {
 		return template;
 	}
@@ -34,15 +24,7 @@ public class ChartWidget extends AbstractIdentifiedBean {
 	public void setTemplate(WidgetTemplate template) {
 		this.template = template;
 	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
+	
 	public String getLabel() {
 		return label;
 	}
@@ -57,22 +39,6 @@ public class ChartWidget extends AbstractIdentifiedBean {
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
-	
-	public int getRefreshTime() {
-		return refreshTime;
-	}
-
-	public void setRefreshTime(int refreshTime) {
-		this.refreshTime = refreshTime;
-	}
-
-	public List<Integer> getValues() {
-		return values;
-	}
-
-	public void setValues(List<Integer> values) {
-		this.values = values;
 	}
 
 	@Override

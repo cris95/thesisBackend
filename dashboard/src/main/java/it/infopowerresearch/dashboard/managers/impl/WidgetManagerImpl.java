@@ -1,18 +1,31 @@
 package it.infopowerresearch.dashboard.managers.impl;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import it.infopowerresearch.dashboard.bean.AlertWidget;
 import it.infopowerresearch.dashboard.bean.ButtonWidget;
 import it.infopowerresearch.dashboard.bean.ChartWidget;
+import it.infopowerresearch.dashboard.bean.SwitchWidget;
 import it.infopowerresearch.dashboard.dao.AlertWidgetDAO;
 import it.infopowerresearch.dashboard.dao.ButtonWidgetDAO;
 import it.infopowerresearch.dashboard.dao.ChartWidgetDAO;
+import it.infopowerresearch.dashboard.dao.SwitchWidgetDAO;
 import it.infopowerresearch.dashboard.managers.WidgetManager;
 
 @Component
@@ -25,39 +38,125 @@ public class WidgetManagerImpl implements WidgetManager {
 	private ButtonWidgetDAO buttonWidgetDAO;
 
 	@Autowired
+	private SwitchWidgetDAO switchWidgetDAO;
+
+	@Autowired
 	private ChartWidgetDAO chartWidgetDAO;
 
 	@Override
-	public AlertWidget getTemperature(long id) {
+	public int buildPushNotification(String title, String body, String value) throws IOException {
+		URL url = new URL("https://fcm.googleapis.com/fcm/send");
 
-		AlertWidget a = alertWidgetDAO.findByTemplateId(id);
-		a.setValue(new Random().nextInt(60) + 40);
-		return a;
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setRequestMethod("POST");
 
+		connection.setRequestProperty("Authorization",
+				"key=AAAAhw6L60o:APA91bEPjIDLE-ue3QiRLDJND2dEd5wSQcbc6Ks_mT9FO1mQ6mN1Pkcx9tZkkp8R_LxJ5vzHnWjAM8C2YuDhrQwmdhDbYh05u2rZCx0K85lW3lV9phFa_Y0iTdptB_1IOJbJb8ngxXHF");
+		connection.setRequestProperty("Content-Type", "application/json");
+		connection.setRequestProperty("Accept", "application/json");
+
+		connection.setConnectTimeout(5000);
+		connection.setReadTimeout(5000);
+
+		JSONObject httpBody = new JSONObject();
+
+		JSONObject notification = new JSONObject();
+		notification.put("title", title);
+		notification.put("body", body);
+
+		JSONObject data = new JSONObject();
+		data.put("value", value);
+
+		httpBody.put("notification", notification);
+		httpBody.put("to",
+				"e2MD1JFxcjYgKM_Breyi1E:APA91bGHH1SHgXzyQa95LlZfp9gVR0kSKatZwy-FvZ4relwb28MzP3tBGkwZJZOawMSWvtKdnKrA6Mo6BeWPD8VdSxrhtm-udLZCPS9225oTPf8Vyw4d2XxxbkmEq_MvbSEdeUiHFG18");
+		httpBody.put("data", data);
+
+		connection.setUseCaches(false);
+		connection.setDoInput(true);
+		connection.setDoOutput(true);
+
+		byte[] outputInBytes = httpBody.toString().getBytes(StandardCharsets.UTF_8);
+		OutputStream os = connection.getOutputStream();
+		os.write(outputInBytes);
+		os.close();
+
+		return connection.getResponseCode();
 	}
 
 	@Override
 	public int switchValue(long id, boolean value) {
-//		ButtonWidget b = buttonWidgetDAO.findByTemplateId(id);
-
+//		SwitchWidget b = switchWidgetDAO.findByTemplateId(id);
 		try {
-			List<Integer> a = null;
-			a.get(3);
+			// call or whatever
 		} catch (Exception e) {
+			return (value) ? 0 : 1;
 		}
 
 		return (value) ? 1 : 0;
 	}
 
 	@Override
-	public ChartWidget getData(long id) {
-		ChartWidget c = chartWidgetDAO.findByTemplateId(id);
-		ArrayList<Integer> l = new ArrayList<>();
-		for (int i = 0; i < 10; i++) {
-			l.add(new Random().nextInt(50));
+	public int clickButtonWidget(long id) {
+		return 0;
+	}
+
+	@Override
+	public Set<AlertWidget> getAlertWidgets(long[] ids) {
+		Set<AlertWidget> alerts = new HashSet<>();
+
+		for (long id : ids) {
+			AlertWidget a = alertWidgetDAO.findByTemplateId(id);
+			alerts.add(a);
 		}
-		c.setValues(l);
-		return c;
+
+		return alerts;
+	}
+
+	@Override
+	public Set<ChartWidget> getChartWidgets(long[] ids) {
+		Set<ChartWidget> charts = new HashSet<>();
+
+		for (long id : ids) {
+			ChartWidget c = chartWidgetDAO.findByTemplateId(id);
+			charts.add(c);
+		}
+
+		return charts;
+	}
+
+	@Override
+	public Map<Long, Integer> getAlertsData(long[] ids) {
+		Map<Long, Integer> data = new HashMap<>();
+		for (long id : ids) {
+			Optional<AlertWidget> optAlert = alertWidgetDAO.findById(id);
+			if (optAlert.isPresent()) {
+				AlertWidget a = optAlert.get();
+				// do the call or whatever to retrieve data
+				data.put(a.getTemplate().getId(), new Random().nextInt(60) + 40);
+			}
+		}
+		return data;
+	}
+
+	@Override
+	public Map<Long, List<Integer>> getChartsData(long[] ids) {
+
+		Map<Long, List<Integer>> data = new HashMap<>();
+		for (long id : ids) {
+			Optional<ChartWidget> optChart = chartWidgetDAO.findById(id);
+			if (optChart.isPresent()) {
+				ChartWidget c = optChart.get();
+				// do the call or whatever to retrieve data
+
+				ArrayList<Integer> l = new ArrayList<>();
+				for (int i = 0; i < 10; i++) {
+					l.add(new Random().nextInt(50));
+				}
+				data.put(c.getTemplate().getId(), l);
+			}
+		}
+		return data;
 	}
 
 	@Override
@@ -66,8 +165,18 @@ public class WidgetManagerImpl implements WidgetManager {
 	}
 
 	@Override
+	public SwitchWidget getSwitchWidget(long templateId) {
+		return switchWidgetDAO.findByTemplateId(templateId);
+	}
+
+	@Override
 	public AlertWidget getAlertWidget(long templateId) {
 		return alertWidgetDAO.findByTemplateId(templateId);
+	}
+
+	@Override
+	public ChartWidget getChartWidget(long id) {
+		return chartWidgetDAO.findByTemplateId(id);
 	}
 
 }

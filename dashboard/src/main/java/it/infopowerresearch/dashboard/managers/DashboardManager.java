@@ -20,7 +20,7 @@ public interface DashboardManager {
 	
 	public Set<Widget> getWidgets(long id);
 
-	public Set<WidgetTemplate> getAllWidgets();
+	public Set<WidgetTemplate> getAllWidgetTemplates();
 
 
 		

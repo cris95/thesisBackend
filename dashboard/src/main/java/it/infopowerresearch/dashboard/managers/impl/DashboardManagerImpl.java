@@ -89,7 +89,7 @@ public class DashboardManagerImpl implements DashboardManager {
 	}
 
 	@Override
-	public Set<WidgetTemplate> getAllWidgets() {
+	public Set<WidgetTemplate> getAllWidgetTemplates() {
 		return new HashSet<>((Collection<? extends WidgetTemplate>) widgetTemplateDAO.findAll());
 	}
 
