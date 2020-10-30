@@ -22,10 +22,12 @@ import it.infopowerresearch.dashboard.bean.AlertWidget;
 import it.infopowerresearch.dashboard.bean.ButtonWidget;
 import it.infopowerresearch.dashboard.bean.ChartWidget;
 import it.infopowerresearch.dashboard.bean.SwitchWidget;
+import it.infopowerresearch.dashboard.bean.WidgetTemplate;
 import it.infopowerresearch.dashboard.dao.AlertWidgetDAO;
 import it.infopowerresearch.dashboard.dao.ButtonWidgetDAO;
 import it.infopowerresearch.dashboard.dao.ChartWidgetDAO;
 import it.infopowerresearch.dashboard.dao.SwitchWidgetDAO;
+import it.infopowerresearch.dashboard.dao.WidgetTemplateDAO;
 import it.infopowerresearch.dashboard.managers.WidgetManager;
 
 @Component
@@ -42,6 +44,9 @@ public class WidgetManagerImpl implements WidgetManager {
 
 	@Autowired
 	private ChartWidgetDAO chartWidgetDAO;
+
+	@Autowired
+	private WidgetTemplateDAO widgetTemplateDAO;
 
 	@Override
 	public int buildPushNotification(String title, String body, String value) throws IOException {
@@ -126,34 +131,27 @@ public class WidgetManagerImpl implements WidgetManager {
 	}
 
 	@Override
-	public Map<Long, Integer> getAlertsData(long[] ids) {
-		Map<Long, Integer> data = new HashMap<>();
-		for (long id : ids) {
-			Optional<AlertWidget> optAlert = alertWidgetDAO.findById(id);
-			if (optAlert.isPresent()) {
-				AlertWidget a = optAlert.get();
-				// do the call or whatever to retrieve data
-				data.put(a.getTemplate().getId(), new Random().nextInt(60) + 40);
-			}
-		}
-		return data;
-	}
-
-	@Override
-	public Map<Long, List<Integer>> getChartsData(long[] ids) {
+	public Map<Long, List<Integer>> getData(long[] ids) {
 
 		Map<Long, List<Integer>> data = new HashMap<>();
 		for (long id : ids) {
-			Optional<ChartWidget> optChart = chartWidgetDAO.findById(id);
-			if (optChart.isPresent()) {
-				ChartWidget c = optChart.get();
-				// do the call or whatever to retrieve data
+			Optional<WidgetTemplate> optTemplate = widgetTemplateDAO.findById(id);
+			if (optTemplate.isPresent()) {
+				WidgetTemplate template = optTemplate.get();
+				List<Integer> value = new ArrayList<>();
+				if (template.getType().equals("alert")) {
+//					 AlertWidget a = alertWidgetDAO.findByTemplateId(template.getId());
+//					 retrieve data or whatever
+					value.add(new Random().nextInt(60) + 40);
 
-				ArrayList<Integer> l = new ArrayList<>();
-				for (int i = 0; i < 10; i++) {
-					l.add(new Random().nextInt(50));
+				} else if (template.getType().equals("chart")) {
+//					ChartWidget c = chartWidgetDAO.findByTemplateId(template.getId());
+//					retrieve data or whatever
+					for (int i = 0; i < 10; i++) {
+						value.add(new Random().nextInt(100));
+					}
 				}
-				data.put(c.getTemplate().getId(), l);
+				data.put(template.getId(), value);
 			}
 		}
 		return data;

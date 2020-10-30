@@ -61,7 +61,7 @@ public class DashboardController {
 	}
 
 	@PostMapping("/saveDashboard")
-	public boolean saveDashboard(final HttpEntity<Dashboard> dashboard) {
+	public Dashboard saveDashboard(final HttpEntity<Dashboard> dashboard) {
 		return dashboardManager.saveDashboard(dashboard.getBody());
 	}
 
@@ -85,16 +85,11 @@ public class DashboardController {
 		return widgetManager.getChartWidgets(ids);
 	}
 	
-	@GetMapping("/getAlertsData")
-	public Map<Long, Integer> getAlertsData(final long[] ids){
-		return widgetManager.getAlertsData(ids);
+	@GetMapping("/getData")
+	public Map<Long, List<Integer>> getData(final long[] ids){
+		return widgetManager.getData(ids);
 	}
 	
-	@GetMapping("/getChartsData")
-	public Map<Long, List<Integer>> getChartsData(final long[] ids){
-		return widgetManager.getChartsData(ids);
-	}
-
 	@GetMapping("/getButtonWidget")
 	public ButtonWidget getButtonWidget(final long templateId) {
 		return widgetManager.getButtonWidget(templateId);

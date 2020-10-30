@@ -94,21 +94,15 @@ public class DashboardManagerImpl implements DashboardManager {
 	}
 
 	@Override
-	public boolean saveDashboard(Dashboard dashboard) {
-		try {
+	public Dashboard saveDashboard(Dashboard dashboard) {
 
-			if (dashboard.getId() != null) {
-				widgetDAO.deleteByDashboardId(dashboard.getId());
-			}
-
-			for (Widget w : dashboard.getWidgets())
-				w.setDashboard(dashboard);
-
-			dashboardDAO.save(dashboard);
-			return true;
-		} catch (Exception e) {
-			log.error(e.getMessage());
+		if (dashboard.getId() != null) {
+			widgetDAO.deleteByDashboardId(dashboard.getId());
 		}
-		return false;
+
+		for (Widget w : dashboard.getWidgets())
+			w.setDashboard(dashboard);
+
+		return dashboardDAO.save(dashboard);
 	}
 }

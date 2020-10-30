@@ -12,7 +12,7 @@ public interface DashboardManager {
 	
 	public boolean deleteDashboard(long id);
 	
-	public boolean saveDashboard(Dashboard dashboard);
+	public Dashboard saveDashboard(Dashboard dashboard);
 	
 	public Set<Dashboard> getUserDashboards(long userId);
 

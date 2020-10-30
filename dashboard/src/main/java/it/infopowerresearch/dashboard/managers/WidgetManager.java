@@ -30,8 +30,6 @@ public interface WidgetManager {
 
 	public Set<ChartWidget> getChartWidgets(long[] ids);
 
-	public Map<Long, Integer> getAlertsData(long[] ids);
-
-	public Map<Long, List<Integer>> getChartsData(long[] ids);
+	public Map<Long, List<Integer>> getData(long[] ids);
 
 }
