@@ -2,24 +2,22 @@ package it.infopowerresearch.dashboard.bean;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
 @Table(name = "alert_widgets")
-public class AlertWidget extends AbstractIdentifiedBean{
+public class AlertWidget extends AbstractIdentifiedBean {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManyToOne
+	@OneToOne
 	private WidgetTemplate template;
 
 	private String label;
 
 	private String url;
-
-	@Transient
-	private int value;
 
 	private int high;
 
@@ -51,17 +49,8 @@ public class AlertWidget extends AbstractIdentifiedBean{
 		this.url = url;
 	}
 
-	public int getValue() {
-		return value;
-	}
-
-	public void setValue(int value) {
-		this.value = value;
-	}
-
 	public int getHigh() {
 		return high;
-
 	}
 
 	public void setHigh(int high) {

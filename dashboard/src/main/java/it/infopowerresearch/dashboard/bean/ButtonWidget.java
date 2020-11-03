@@ -2,6 +2,7 @@ package it.infopowerresearch.dashboard.bean;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -10,7 +11,7 @@ public class ButtonWidget  extends AbstractIdentifiedBean{
 
 	private static final long serialVersionUID = 1L;
 	
-	@ManyToOne
+	@OneToOne
 	private WidgetTemplate template;
 	
 	private String label;

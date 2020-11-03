@@ -18,6 +18,7 @@ import it.infopowerresearch.dashboard.bean.AlertWidget;
 import it.infopowerresearch.dashboard.bean.ButtonWidget;
 import it.infopowerresearch.dashboard.bean.ChartWidget;
 import it.infopowerresearch.dashboard.bean.Dashboard;
+import it.infopowerresearch.dashboard.bean.SliderWidget;
 import it.infopowerresearch.dashboard.bean.SwitchWidget;
 import it.infopowerresearch.dashboard.bean.User;
 import it.infopowerresearch.dashboard.bean.WidgetTemplate;
@@ -89,20 +90,25 @@ public class DashboardController {
 	public Map<Long, List<Integer>> getData(final long[] ids){
 		return widgetManager.getData(ids);
 	}
+
+	@GetMapping("/getAlertWidget")
+	public AlertWidget getAlertWidget(final long templateId) {
+		return widgetManager.getAlertWidget(templateId);
+	}
 	
 	@GetMapping("/getButtonWidget")
 	public ButtonWidget getButtonWidget(final long templateId) {
 		return widgetManager.getButtonWidget(templateId);
 	}
 	
+	@GetMapping("/getSliderWidget")
+	public SliderWidget getSliderWidget(final long templateId) {
+		return widgetManager.getSliderWidget(templateId);
+	}
+	
 	@GetMapping("/getSwitchWidget")
 	public SwitchWidget getSwitchWidget(final long templateId) {
 		return widgetManager.getSwitchWidget(templateId);
-	}
-	
-	@GetMapping("/getAlertWidget")
-	public AlertWidget getAlertWidget(final long templateId) {
-		return widgetManager.getAlertWidget(templateId);
 	}
 
 	@GetMapping("/getChartWidget")
@@ -110,15 +116,22 @@ public class DashboardController {
 		return widgetManager.getChartWidget(templateId);
 	}
 
+	@GetMapping("/changeSliderValue")
+	public int changeSliderValue(final long id, final int value) {
+		return widgetManager.changeSliderValue(id, value);
+	}
+	
+	@GetMapping("/clickButtonWidget")
+	public int clickButtonWidget(final long id) {
+		return widgetManager.clickButtonWidget(id);
+	}
+
 	@GetMapping("/switchValue")
 	public int switchValue(final long id, final boolean value) {
 		return widgetManager.switchValue(id, value);
 	}
 	
-	@GetMapping("clickButtonWidget")
-	public int clickButtonWidget(final long id) {
-		return widgetManager.clickButtonWidget(id);
-	}
+	
 
 
 }

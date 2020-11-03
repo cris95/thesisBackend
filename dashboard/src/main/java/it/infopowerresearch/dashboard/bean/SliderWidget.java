@@ -1,23 +1,28 @@
 package it.infopowerresearch.dashboard.bean;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "switch_widgets")
-public class SwitchWidget  extends AbstractIdentifiedBean{
+@Table(name = "slider_widgets")
+public class SliderWidget extends AbstractIdentifiedBean {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@OneToOne
 	private WidgetTemplate template;
-	
+
 	private String label;
 
 	private String url;
-	
+
+	private int min;
+
+	private int max;
+
+	private int value;
+
 	public WidgetTemplate getTemplate() {
 		return template;
 	}
@@ -25,7 +30,31 @@ public class SwitchWidget  extends AbstractIdentifiedBean{
 	public void setTemplate(WidgetTemplate template) {
 		this.template = template;
 	}
-	
+
+	public int getMin() {
+		return min;
+	}
+
+	public void setMin(int min) {
+		this.min = min;
+	}
+
+	public int getMax() {
+		return max;
+	}
+
+	public void setMax(int max) {
+		this.max = max;
+	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
+
 	public String getLabel() {
 		return label;
 	}
