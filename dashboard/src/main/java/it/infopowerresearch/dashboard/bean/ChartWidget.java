@@ -28,6 +28,8 @@ public class ChartWidget extends AbstractIdentifiedBean {
 	@Transient
 	private List<Integer> values;
 
+	private String dataMode;
+
 	public WidgetTemplate getTemplate() {
 		return template;
 	}
@@ -74,6 +76,14 @@ public class ChartWidget extends AbstractIdentifiedBean {
 
 	public void setValues(List<Integer> values) {
 		this.values = values;
+	}
+	
+	public String getDataMode() {
+		return dataMode;
+	}
+
+	public void setDataMode(String dataMode) {
+		this.dataMode = dataMode;
 	}
 
 	@Override

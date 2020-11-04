@@ -24,6 +24,8 @@ public class AlertWidget extends AbstractIdentifiedBean {
 	private int low;
 
 	private int refreshTime;
+	
+	private String dataMode;
 
 	public WidgetTemplate getTemplate() {
 		return template;
@@ -73,6 +75,14 @@ public class AlertWidget extends AbstractIdentifiedBean {
 		this.refreshTime = refreshTime;
 	}
 
+	public String getDataMode() {
+		return dataMode;
+	}
+
+	public void setDataMode(String dataMode) {
+		this.dataMode = dataMode;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		// TODO Auto-generated method stub
@@ -90,5 +100,7 @@ public class AlertWidget extends AbstractIdentifiedBean {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
 
 }

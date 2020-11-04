@@ -1,13 +1,15 @@
 package it.infopowerresearch.dashboard.managers.impl;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +18,18 @@ import org.springframework.stereotype.Component;
 import it.infopowerresearch.dashboard.bean.AlertWidget;
 import it.infopowerresearch.dashboard.bean.ButtonWidget;
 import it.infopowerresearch.dashboard.bean.ChartWidget;
+import it.infopowerresearch.dashboard.bean.EditWidgetMetadata;
 import it.infopowerresearch.dashboard.bean.SliderWidget;
 import it.infopowerresearch.dashboard.bean.SwitchWidget;
 import it.infopowerresearch.dashboard.bean.WidgetTemplate;
 import it.infopowerresearch.dashboard.dao.AlertWidgetDAO;
 import it.infopowerresearch.dashboard.dao.ButtonWidgetDAO;
 import it.infopowerresearch.dashboard.dao.ChartWidgetDAO;
+import it.infopowerresearch.dashboard.dao.EditWidgetMetadataDAO;
 import it.infopowerresearch.dashboard.dao.SliderWidgetDAO;
 import it.infopowerresearch.dashboard.dao.SwitchWidgetDAO;
 import it.infopowerresearch.dashboard.dao.WidgetTemplateDAO;
+import it.infopowerresearch.dashboard.data.Data;
 import it.infopowerresearch.dashboard.managers.WidgetManager;
 
 @Component
@@ -47,6 +52,9 @@ public class WidgetManagerImpl implements WidgetManager {
 
 	@Autowired
 	private WidgetTemplateDAO widgetTemplateDAO;
+
+	@Autowired
+	private EditWidgetMetadataDAO editWidgetMetadataDAO;
 
 	@Override
 	public int buildPushNotification(String title, String body, String value) throws IOException {
@@ -146,31 +154,41 @@ public class WidgetManagerImpl implements WidgetManager {
 		return charts;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Map<Long, List<Integer>> getData(long[] ids) {
-
-		Map<Long, List<Integer>> data = new HashMap<>();
-		for (long id : ids) {
-			Optional<WidgetTemplate> optTemplate = widgetTemplateDAO.findById(id);
-			if (optTemplate.isPresent()) {
-				WidgetTemplate template = optTemplate.get();
-				List<Integer> value = new ArrayList<>();
-				if (template.getType().equals("alert")) {
-//					 AlertWidget a = alertWidgetDAO.findByTemplateId(template.getId());
-//					 retrieve data or whatever
-					value.add(new Random().nextInt(60) + 40);
-
-				} else if (template.getType().equals("chart")) {
-//					ChartWidget c = chartWidgetDAO.findByTemplateId(template.getId());
-//					retrieve data or whatever
-					for (int i = 0; i < 10; i++) {
-						value.add(new Random().nextInt(100));
+	public Map<Long, List<Integer>> getWidgetsData(long[] ids) {
+		try {
+			Map<Long, List<Integer>> data = new HashMap<>();
+			Class<Data> dataClass = Data.class;
+			Object dataObject = dataClass.getDeclaredConstructor().newInstance();
+			Method m;
+			for (long id : ids) {
+				Optional<WidgetTemplate> optTemplate = widgetTemplateDAO.findById(id);
+				if (optTemplate.isPresent()) {
+					WidgetTemplate template = optTemplate.get();
+					List<Integer> value = new ArrayList<>();
+					if (template.getType().equals("alert")) {
+						AlertWidget a = alertWidgetDAO.findByTemplateId(template.getId());
+						if (a.getDataMode().equals("local")) {
+							m = dataClass.getDeclaredMethod(a.getUrl());
+							value = (List<Integer>) m.invoke(dataObject);
+						}
+					} else if (template.getType().equals("chart")) {
+						ChartWidget c = chartWidgetDAO.findByTemplateId(template.getId());
+						if (c.getDataMode().equals("local")) {
+							m = dataClass.getDeclaredMethod(c.getUrl());
+							value = (List<Integer>) m.invoke(dataObject);
+						}
 					}
+					data.put(template.getId(), value);
 				}
-				data.put(template.getId(), value);
 			}
+			return data;
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
+			e.printStackTrace();
 		}
-		return data;
+		return null;
 	}
 
 	@Override
@@ -196,6 +214,16 @@ public class WidgetManagerImpl implements WidgetManager {
 	@Override
 	public SwitchWidget getSwitchWidget(long templateId) {
 		return switchWidgetDAO.findByTemplateId(templateId);
+	}
+
+	@Override
+	public Set<WidgetTemplate> getAllWidgetTemplates() {
+		return new HashSet<>((Collection<? extends WidgetTemplate>) widgetTemplateDAO.findAll());
+	}
+
+	@Override
+	public List<EditWidgetMetadata> getAllEditWidgetMetadata() {
+		return new ArrayList<>((Collection<? extends EditWidgetMetadata>) editWidgetMetadataDAO.findAll());
 	}
 
 }

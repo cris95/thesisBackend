@@ -18,6 +18,7 @@ import it.infopowerresearch.dashboard.bean.AlertWidget;
 import it.infopowerresearch.dashboard.bean.ButtonWidget;
 import it.infopowerresearch.dashboard.bean.ChartWidget;
 import it.infopowerresearch.dashboard.bean.Dashboard;
+import it.infopowerresearch.dashboard.bean.EditWidgetMetadata;
 import it.infopowerresearch.dashboard.bean.SliderWidget;
 import it.infopowerresearch.dashboard.bean.SwitchWidget;
 import it.infopowerresearch.dashboard.bean.User;
@@ -73,7 +74,12 @@ public class DashboardController {
 
 	@GetMapping("/getAllWidgetTemplates")
 	public Set<WidgetTemplate> getAllWidgetTemplates() {
-		return dashboardManager.getAllWidgetTemplates();
+		return widgetManager.getAllWidgetTemplates();
+	}
+	
+	@GetMapping("/getAllEditWidgetMetadata")
+	public List<EditWidgetMetadata> getAllEditWidgetMetadata() {
+		return widgetManager.getAllEditWidgetMetadata();
 	}
 	
 	@GetMapping("/getAlertWidgets")
@@ -86,9 +92,9 @@ public class DashboardController {
 		return widgetManager.getChartWidgets(ids);
 	}
 	
-	@GetMapping("/getData")
-	public Map<Long, List<Integer>> getData(final long[] ids){
-		return widgetManager.getData(ids);
+	@GetMapping("/getWidgetsData")
+	public Map<Long, List<Integer>> getWidgetsData(final long[] ids){
+		return widgetManager.getWidgetsData(ids);
 	}
 
 	@GetMapping("/getAlertWidget")

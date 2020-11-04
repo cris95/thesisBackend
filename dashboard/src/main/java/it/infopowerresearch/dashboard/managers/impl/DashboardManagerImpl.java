@@ -1,6 +1,5 @@
 package it.infopowerresearch.dashboard.managers.impl;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
 import it.infopowerresearch.dashboard.bean.Dashboard;
 import it.infopowerresearch.dashboard.bean.User;
 import it.infopowerresearch.dashboard.bean.Widget;
-import it.infopowerresearch.dashboard.bean.WidgetTemplate;
 import it.infopowerresearch.dashboard.dao.DashboardDAO;
 import it.infopowerresearch.dashboard.dao.UserDAO;
 import it.infopowerresearch.dashboard.dao.WidgetDAO;
@@ -86,11 +84,6 @@ public class DashboardManagerImpl implements DashboardManager {
 	@Override
 	public Set<Widget> getWidgets(long id) {
 		return widgetDAO.findByDashboardId(id);
-	}
-
-	@Override
-	public Set<WidgetTemplate> getAllWidgetTemplates() {
-		return new HashSet<>((Collection<? extends WidgetTemplate>) widgetTemplateDAO.findAll());
 	}
 
 	@Override
