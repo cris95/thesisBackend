@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import it.infopowerresearch.dashboard.bean.AbstractWidget;
 import it.infopowerresearch.dashboard.bean.AlertWidget;
 import it.infopowerresearch.dashboard.bean.ButtonWidget;
 import it.infopowerresearch.dashboard.bean.ChartWidget;
@@ -12,28 +13,17 @@ import it.infopowerresearch.dashboard.bean.EditWidgetMetadata;
 import it.infopowerresearch.dashboard.bean.SliderWidget;
 import it.infopowerresearch.dashboard.bean.SwitchWidget;
 import it.infopowerresearch.dashboard.bean.WidgetTemplate;
+import it.infopowerresearch.dashboard.dto.AbstractWidgetDTO;
 
 public interface WidgetManager {
 
-	public AlertWidget getAlertWidget(long templateId);
-
-	public ButtonWidget getButtonWidget(long templateId);
-
-	public ChartWidget getChartWidget(long id);
-
-	public SliderWidget getSliderWidget(long templateId);
-
-	public SwitchWidget getSwitchWidget(long templateId);
-	
 	public Set<WidgetTemplate> getAllWidgetTemplates();
-	
+
 	public List<EditWidgetMetadata> getAllEditWidgetMetadata();
 
 	public int buildPushNotification(String title, String body, String value) throws IOException;
 
-	public Set<AlertWidget> getAlertWidgets(long[] ids);
-
-	public Set<ChartWidget> getChartWidgets(long[] ids);
+	public Set<AbstractWidget> getWidgets(long[] ids);
 
 	public Map<Long, List<Integer>> getWidgetsData(long[] ids);
 
@@ -42,5 +32,13 @@ public interface WidgetManager {
 	public int clickButtonWidget(long id);
 
 	public int switchValue(long id, boolean value);
+
+	public boolean saveWidget(AbstractWidgetDTO widget);
+
+	public boolean deleteWidget(long templateId);
+
+	public AbstractWidget getWidget(long templateId, String type);
+
+
 
 }

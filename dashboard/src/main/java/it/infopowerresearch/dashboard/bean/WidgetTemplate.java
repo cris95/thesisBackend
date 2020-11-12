@@ -9,16 +9,38 @@ import javax.persistence.Table;
 public class WidgetTemplate extends AbstractIdentifiedBean {
 
 	private static final long serialVersionUID = 1L;
+
+	private String label;
+
+	private String url;
 	
 	private String type;
 
 	private int rows;
-	
+
 	private int cols;
 
 	private String description;
 
 	private String image;
+	
+	private String dataMode;
+	
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 	public String getType() {
 		return type;
@@ -27,7 +49,7 @@ public class WidgetTemplate extends AbstractIdentifiedBean {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 	public int getRows() {
 		return rows;
 	}
@@ -58,6 +80,14 @@ public class WidgetTemplate extends AbstractIdentifiedBean {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public String getDataMode() {
+		return dataMode;
+	}
+
+	public void setDataMode(String dataMode) {
+		this.dataMode = dataMode;
 	}
 
 	@Override

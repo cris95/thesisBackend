@@ -1,6 +1,5 @@
 package it.infopowerresearch.dashboard.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -11,18 +10,14 @@ import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.infopowerresearch.dashboard.bean.AlertWidget;
-import it.infopowerresearch.dashboard.bean.ButtonWidget;
-import it.infopowerresearch.dashboard.bean.ChartWidget;
+import it.infopowerresearch.dashboard.bean.AbstractWidget;
 import it.infopowerresearch.dashboard.bean.Dashboard;
 import it.infopowerresearch.dashboard.bean.EditWidgetMetadata;
-import it.infopowerresearch.dashboard.bean.SliderWidget;
-import it.infopowerresearch.dashboard.bean.SwitchWidget;
 import it.infopowerresearch.dashboard.bean.User;
 import it.infopowerresearch.dashboard.bean.WidgetTemplate;
+import it.infopowerresearch.dashboard.dto.AbstractWidgetDTO;
 import it.infopowerresearch.dashboard.managers.DashboardManager;
 import it.infopowerresearch.dashboard.managers.UserManager;
 import it.infopowerresearch.dashboard.managers.WidgetManager;
@@ -72,61 +67,46 @@ public class DashboardController {
 		return dashboardManager.deleteDashboard(id);
 	}
 
+	@GetMapping("/deleteWidget")
+	public boolean deleteWidget(final long templateId) {
+		return widgetManager.deleteWidget(templateId);
+	}
+	
+	@PostMapping("/saveWidget")
+	public boolean saveWidget(final HttpEntity<AbstractWidgetDTO> widget) {
+		return widgetManager.saveWidget(widget.getBody());
+	}
+
 	@GetMapping("/getAllWidgetTemplates")
 	public Set<WidgetTemplate> getAllWidgetTemplates() {
 		return widgetManager.getAllWidgetTemplates();
 	}
-	
+
 	@GetMapping("/getAllEditWidgetMetadata")
 	public List<EditWidgetMetadata> getAllEditWidgetMetadata() {
 		return widgetManager.getAllEditWidgetMetadata();
 	}
 	
-	@GetMapping("/getAlertWidgets")
-	public Set<AlertWidget> getAlertWidgets(final long[] ids){
-		return widgetManager.getAlertWidgets(ids);
+	@GetMapping("/getWidgets")
+	public Set<AbstractWidget> getWidgets(final long[] ids){
+		return widgetManager.getWidgets(ids);
 	}
-	
-	@GetMapping("/getChartWidgets")
-	public Set<ChartWidget> getChartWidgets(final long[] ids){
-		return widgetManager.getChartWidgets(ids);
-	}
-	
+
 	@GetMapping("/getWidgetsData")
-	public Map<Long, List<Integer>> getWidgetsData(final long[] ids){
+	public Map<Long, List<Integer>> getWidgetsData(final long[] ids) {
 		return widgetManager.getWidgetsData(ids);
 	}
 
-	@GetMapping("/getAlertWidget")
-	public AlertWidget getAlertWidget(final long templateId) {
-		return widgetManager.getAlertWidget(templateId);
-	}
-	
-	@GetMapping("/getButtonWidget")
-	public ButtonWidget getButtonWidget(final long templateId) {
-		return widgetManager.getButtonWidget(templateId);
-	}
-	
-	@GetMapping("/getSliderWidget")
-	public SliderWidget getSliderWidget(final long templateId) {
-		return widgetManager.getSliderWidget(templateId);
-	}
-	
-	@GetMapping("/getSwitchWidget")
-	public SwitchWidget getSwitchWidget(final long templateId) {
-		return widgetManager.getSwitchWidget(templateId);
-	}
-
-	@GetMapping("/getChartWidget")
-	public ChartWidget getChartWidget(final long templateId) {
-		return widgetManager.getChartWidget(templateId);
+	@GetMapping("/getWidget")
+	public AbstractWidget getWidget(final long templateId, final String type) {
+		return widgetManager.getWidget(templateId, type);
 	}
 
 	@GetMapping("/changeSliderValue")
 	public int changeSliderValue(final long id, final int value) {
 		return widgetManager.changeSliderValue(id, value);
 	}
-	
+
 	@GetMapping("/clickButtonWidget")
 	public int clickButtonWidget(final long id) {
 		return widgetManager.clickButtonWidget(id);
@@ -136,8 +116,5 @@ public class DashboardController {
 	public int switchValue(final long id, final boolean value) {
 		return widgetManager.switchValue(id, value);
 	}
-	
-	
-
 
 }

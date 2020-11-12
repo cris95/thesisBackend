@@ -42,7 +42,7 @@ public class DashboardManagerImpl implements DashboardManager {
 			if (optUser.isPresent()) {
 				Dashboard d = new Dashboard();
 				Set<Dashboard> dashboards = dashboardDAO.findByUserId(userId);
-				d.setName("dashboard" + (dashboards.size() + 1));
+				d.setName("dashboard " + (dashboards.size() + 1));
 				d.setUser(optUser.get());
 				d.setWidgets(new HashSet<>());
 				dashboardDAO.save(d);

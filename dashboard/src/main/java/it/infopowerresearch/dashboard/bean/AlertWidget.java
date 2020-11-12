@@ -8,16 +8,9 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "alert_widgets")
-public class AlertWidget extends AbstractIdentifiedBean {
+public class AlertWidget extends AbstractWidget {
 
 	private static final long serialVersionUID = 1L;
-
-	@OneToOne
-	private WidgetTemplate template;
-
-	private String label;
-
-	private String url;
 
 	private int high;
 
@@ -25,32 +18,6 @@ public class AlertWidget extends AbstractIdentifiedBean {
 
 	private int refreshTime;
 	
-	private String dataMode;
-
-	public WidgetTemplate getTemplate() {
-		return template;
-	}
-
-	public void setTemplate(WidgetTemplate template) {
-		this.template = template;
-	}
-
-	public String getLabel() {
-		return label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
 	public int getHigh() {
 		return high;
 	}
@@ -75,14 +42,6 @@ public class AlertWidget extends AbstractIdentifiedBean {
 		this.refreshTime = refreshTime;
 	}
 
-	public String getDataMode() {
-		return dataMode;
-	}
-
-	public void setDataMode(String dataMode) {
-		this.dataMode = dataMode;
-	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		// TODO Auto-generated method stub

@@ -1,15 +1,23 @@
 package it.infopowerresearch.dashboard.bean;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "button_widgets")
-public class ButtonWidget extends AbstractWidget {
+@MappedSuperclass
+public class AbstractWidget extends AbstractIdentifiedBean {
 
 	private static final long serialVersionUID = 1L;
+
+	@OneToOne
+	private WidgetTemplate template;
+	
+	public WidgetTemplate getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(WidgetTemplate template) {
+		this.template = template;
+	}
 
 	@Override
 	public boolean equals(Object obj) {

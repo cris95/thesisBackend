@@ -4,8 +4,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import it.infopowerresearch.dashboard.bean.AlertWidget;
+import it.infopowerresearch.dashboard.bean.ButtonWidget;
+import it.infopowerresearch.dashboard.bean.ChartWidget;
 import it.infopowerresearch.dashboard.bean.EditWidgetMetadata;
+import it.infopowerresearch.dashboard.bean.SliderWidget;
+import it.infopowerresearch.dashboard.bean.SwitchWidget;
 import it.infopowerresearch.dashboard.bean.User;
+import it.infopowerresearch.dashboard.bean.WidgetTemplate;
 import it.infopowerresearch.dashboard.dao.AlertWidgetDAO;
 import it.infopowerresearch.dashboard.dao.ButtonWidgetDAO;
 import it.infopowerresearch.dashboard.dao.ChartWidgetDAO;
@@ -54,18 +60,18 @@ class DashboardApplicationTests {
 		userDAO.save(u);
 	}
 
-	@Test
-	void widgets() {
-
+//	@Test
+//	void widgets() {
+//
 //		WidgetTemplate w = new WidgetTemplate();
 //		w.setType("button");
 //		w.setCols(2);
 //		w.setRows(1);
+//		w.setLabel("turn off ...");
 //		w.setDescription("turn off ...");
 //		widgetTemplateDAO.save(w);
 //		w = widgetTemplateDAO.findById(1l).get();
 //		ButtonWidget b = new ButtonWidget();
-//		b.setLabel("turn off ...");
 //		b.setTemplate(w);
 //		buttonWidgetDAO.save(b);
 //
@@ -74,15 +80,15 @@ class DashboardApplicationTests {
 //		w.setCols(2);
 //		w.setRows(2);
 //		w.setDescription("cpu temperature");
+//		w.setDataMode("local");
+//		w.setUrl("getAlertData");
+//		w.setLabel("cpu temperature");
 //		widgetTemplateDAO.save(w);
 //		w = widgetTemplateDAO.findById(2l).get();
 //		AlertWidget a = new AlertWidget();
 //		a.setLow(60);
 //		a.setHigh(80);
 //		a.setRefreshTime(3000);
-//		a.setDataMode("local");
-//		a.setUrl("getAlertData");
-//		a.setLabel("cpu temperature");
 //		a.setTemplate(w);
 //		alertWidgetDAO.save(a);
 //
@@ -91,14 +97,14 @@ class DashboardApplicationTests {
 //		w.setCols(3);
 //		w.setRows(3);
 //		w.setDescription("bar chart");
+//		w.setDataMode("local");
+//		w.setUrl("getChartData");
+//		w.setLabel("bar chart");
 //		widgetTemplateDAO.save(w);
 //		w = widgetTemplateDAO.findById(3l).get();
 //		ChartWidget c = new ChartWidget();
-//		c.setLabel("bar chart");
-//		c.setType("bar");
+//		c.setChartType("bar");
 //		c.setRefreshTime(6000);
-//		c.setDataMode("local");
-//		c.setUrl("getChartData");
 //		c.setTemplate(w);
 //		chartWidgetDAO.save(c);
 //		
@@ -107,14 +113,14 @@ class DashboardApplicationTests {
 //		w.setCols(3);
 //		w.setRows(3);
 //		w.setDescription("line chart");
+//		w.setLabel("line chart");
+//		w.setDataMode("local");
+//		w.setUrl("getChartData");
 //		widgetTemplateDAO.save(w);
 //		w = widgetTemplateDAO.findById(4l).get();
 //		c = new ChartWidget();
-//		c.setLabel("line chart");
-//		c.setType("line");
+//		c.setChartType("line");
 //		c.setRefreshTime(4000);
-//		c.setDataMode("local");
-//		c.setUrl("getChartData");
 //		c.setTemplate(w);
 //		chartWidgetDAO.save(c);
 //		
@@ -122,11 +128,11 @@ class DashboardApplicationTests {
 //		w.setType("switch");
 //		w.setCols(2);
 //		w.setRows(1);
+//		w.setLabel("switch the pumps on/off");
 //		w.setDescription("switch the pumps on/off");
 //		widgetTemplateDAO.save(w);
 //		w = widgetTemplateDAO.findById(5l).get();
 //		SwitchWidget s = new SwitchWidget();
-//		s.setLabel("switch the pumps on/off");
 //		s.setTemplate(w);
 //		switchWidgetDAO.save(s);
 //		
@@ -135,23 +141,38 @@ class DashboardApplicationTests {
 //		w.setCols(3);
 //		w.setRows(1);
 //		w.setDescription("level of ...");
+//		w.setLabel("level of ...");
 //		widgetTemplateDAO.save(w);
 //		w = widgetTemplateDAO.findById(6l).get();
 //		SliderWidget slider = new SliderWidget();
-//		slider.setLabel("level of ...");
 //		slider.setMin(1);
 //		slider.setMax(10);
 //		slider.setValue(2);
 //		slider.setTemplate(w);
 //		sliderWidgetDAO.save(slider);
-
-	}
-
-	@Test
-	void editMetadata() {
-
+//
+//	}
+//
+//	@Test
+//	void editMetadata() {
+//
 //		// Alert
 //		EditWidgetMetadata e = new EditWidgetMetadata();
+//		e = new EditWidgetMetadata();
+//		e.setWidgetType("alert");
+//		e.setField("description");
+//		editWidgetMetadataDAO.save(e);
+//		
+//		e = new EditWidgetMetadata();
+//		e.setWidgetType("alert");
+//		e.setField("rows");
+//		editWidgetMetadataDAO.save(e);
+//		
+//		e = new EditWidgetMetadata();
+//		e.setWidgetType("alert");
+//		e.setField("cols");
+//		editWidgetMetadataDAO.save(e);
+//		
 //		e = new EditWidgetMetadata();
 //		e.setWidgetType("alert");
 //		e.setField("label");
@@ -185,6 +206,21 @@ class DashboardApplicationTests {
 //		// Button
 //		e = new EditWidgetMetadata();
 //		e.setWidgetType("button");
+//		e.setField("description");
+//		editWidgetMetadataDAO.save(e);
+//		
+//		e = new EditWidgetMetadata();
+//		e.setWidgetType("button");
+//		e.setField("rows");
+//		editWidgetMetadataDAO.save(e);
+//		
+//		e = new EditWidgetMetadata();
+//		e.setWidgetType("button");
+//		e.setField("cols");
+//		editWidgetMetadataDAO.save(e);
+//		
+//		e = new EditWidgetMetadata();
+//		e.setWidgetType("button");
 //		e.setField("label");
 //		editWidgetMetadataDAO.save(e);
 //		
@@ -193,7 +229,27 @@ class DashboardApplicationTests {
 //		e.setField("url");
 //		editWidgetMetadataDAO.save(e);
 //		
+//		e = new EditWidgetMetadata();
+//		e.setWidgetType("button");
+//		e.setField("data_mode");
+//		editWidgetMetadataDAO.save(e);
+//		
 //		// Chart
+//		e = new EditWidgetMetadata();
+//		e.setWidgetType("chart");
+//		e.setField("description");
+//		editWidgetMetadataDAO.save(e);
+//		
+//		e = new EditWidgetMetadata();
+//		e.setWidgetType("chart");
+//		e.setField("rows");
+//		editWidgetMetadataDAO.save(e);
+//		
+//		e = new EditWidgetMetadata();
+//		e.setWidgetType("chart");
+//		e.setField("cols");
+//		editWidgetMetadataDAO.save(e);
+//		
 //		e = new EditWidgetMetadata();
 //		e.setWidgetType("chart");
 //		e.setField("label");
@@ -222,6 +278,21 @@ class DashboardApplicationTests {
 //		// Slider
 //		e = new EditWidgetMetadata();
 //		e.setWidgetType("slider");
+//		e.setField("description");
+//		editWidgetMetadataDAO.save(e);
+//		
+//		e = new EditWidgetMetadata();
+//		e.setWidgetType("slider");
+//		e.setField("rows");
+//		editWidgetMetadataDAO.save(e);
+//		
+//		e = new EditWidgetMetadata();
+//		e.setWidgetType("slider");
+//		e.setField("cols");
+//		editWidgetMetadataDAO.save(e);
+//		
+//		e = new EditWidgetMetadata();
+//		e.setWidgetType("slider");
 //		e.setField("label");
 //		editWidgetMetadataDAO.save(e);
 //		
@@ -240,7 +311,27 @@ class DashboardApplicationTests {
 //		e.setField("url");
 //		editWidgetMetadataDAO.save(e);
 //		
+//		e = new EditWidgetMetadata();
+//		e.setWidgetType("slider");
+//		e.setField("data_mode");
+//		editWidgetMetadataDAO.save(e);
+//		
 //		// Switch
+//		e = new EditWidgetMetadata();
+//		e.setWidgetType("switch");
+//		e.setField("description");
+//		editWidgetMetadataDAO.save(e);
+//		
+//		e = new EditWidgetMetadata();
+//		e.setWidgetType("switch");
+//		e.setField("rows");
+//		editWidgetMetadataDAO.save(e);
+//		
+//		e = new EditWidgetMetadata();
+//		e.setWidgetType("switch");
+//		e.setField("cols");
+//		editWidgetMetadataDAO.save(e);
+//		
 //		e = new EditWidgetMetadata();
 //		e.setWidgetType("switch");
 //		e.setField("label");
@@ -250,7 +341,12 @@ class DashboardApplicationTests {
 //		e.setWidgetType("switch");
 //		e.setField("url");
 //		editWidgetMetadataDAO.save(e);
-		
-	}
-
+//		
+//		e = new EditWidgetMetadata();
+//		e.setWidgetType("switch");
+//		e.setField("data_mode");
+//		editWidgetMetadataDAO.save(e);
+//		
+//	}
+	
 }

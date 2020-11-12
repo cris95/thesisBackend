@@ -11,7 +11,12 @@ public interface WidgetDAO extends CrudRepository<Widget, Long> {
 
 	public Set<Widget> findByDashboardId(long dashboardId);
 	
+	public Widget findByTemplateId(long templateId);
+	
 	@Transactional
 	public void deleteByDashboardId(long dashboardId);
+	
+	@Transactional
+	public void deleteByTemplateId(long templateId);
 
 }

@@ -21,11 +21,14 @@ public class WebSocketController {
 	public String getNotification(final HttpEntity<Map<Integer, List<Integer>>> body) {
 
 		Map<Integer, List<Integer>> data = body.getBody();
-		
-		// Push notifications to front-end
-		template.convertAndSend("/message", data);
 
-		return "Notifications successfully sent to Angular !";
+		// Push notifications to front-end
+		if (data != null) {
+			template.convertAndSend("/message", data);
+			return "Notifications successfully sent to Angular !";
+		} else {
+			return "Null payload";
+		}
 	}
 
 }

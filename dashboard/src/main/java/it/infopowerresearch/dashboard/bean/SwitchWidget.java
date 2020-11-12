@@ -7,40 +7,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "switch_widgets")
-public class SwitchWidget  extends AbstractIdentifiedBean{
+public class SwitchWidget extends AbstractWidget {
 
 	private static final long serialVersionUID = 1L;
-	
-	@OneToOne
-	private WidgetTemplate template;
-	
-	private String label;
-
-	private String url;
-	
-	public WidgetTemplate getTemplate() {
-		return template;
-	}
-
-	public void setTemplate(WidgetTemplate template) {
-		this.template = template;
-	}
-	
-	public String getLabel() {
-		return label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
 
 	@Override
 	public boolean equals(Object obj) {

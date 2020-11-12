@@ -12,15 +12,19 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import it.infopowerresearch.dashboard.bean.AbstractWidget;
 import it.infopowerresearch.dashboard.bean.AlertWidget;
 import it.infopowerresearch.dashboard.bean.ButtonWidget;
 import it.infopowerresearch.dashboard.bean.ChartWidget;
 import it.infopowerresearch.dashboard.bean.EditWidgetMetadata;
 import it.infopowerresearch.dashboard.bean.SliderWidget;
 import it.infopowerresearch.dashboard.bean.SwitchWidget;
+import it.infopowerresearch.dashboard.bean.Widget;
 import it.infopowerresearch.dashboard.bean.WidgetTemplate;
 import it.infopowerresearch.dashboard.dao.AlertWidgetDAO;
 import it.infopowerresearch.dashboard.dao.ButtonWidgetDAO;
@@ -28,12 +32,23 @@ import it.infopowerresearch.dashboard.dao.ChartWidgetDAO;
 import it.infopowerresearch.dashboard.dao.EditWidgetMetadataDAO;
 import it.infopowerresearch.dashboard.dao.SliderWidgetDAO;
 import it.infopowerresearch.dashboard.dao.SwitchWidgetDAO;
+import it.infopowerresearch.dashboard.dao.WidgetDAO;
 import it.infopowerresearch.dashboard.dao.WidgetTemplateDAO;
 import it.infopowerresearch.dashboard.data.Data;
+import it.infopowerresearch.dashboard.dto.AbstractWidgetDTO;
 import it.infopowerresearch.dashboard.managers.WidgetManager;
 
 @Component
 public class WidgetManagerImpl implements WidgetManager {
+
+	private static final String ALERT = "alert";
+	private static final String BUTTON = "button";
+	private static final String CHART = "chart";
+	private static final String SLIDER = "slider";
+	private static final String SWITCH = "switch";
+
+	@Autowired
+	private WidgetDAO widgetDAO;
 
 	@Autowired
 	private AlertWidgetDAO alertWidgetDAO;
@@ -117,6 +132,8 @@ public class WidgetManagerImpl implements WidgetManager {
 			SliderWidget slider = optSlider.get();
 			// call or whatever
 			try {
+				slider.setValue(value);
+				sliderWidgetDAO.save(slider);
 				return value;
 			} catch (Exception e) {
 				return slider.getValue();
@@ -131,27 +148,39 @@ public class WidgetManagerImpl implements WidgetManager {
 	}
 
 	@Override
-	public Set<AlertWidget> getAlertWidgets(long[] ids) {
-		Set<AlertWidget> alerts = new HashSet<>();
+	public Set<AbstractWidget> getWidgets(long[] ids) {
+		Set<AbstractWidget> widgets = new HashSet<>();
 
 		for (long id : ids) {
-			AlertWidget a = alertWidgetDAO.findByTemplateId(id);
-			alerts.add(a);
+			AbstractWidget w = new AbstractWidget();
+
+			Optional<WidgetTemplate> optTemplate = widgetTemplateDAO.findById(id);
+			if (optTemplate.isPresent()) {
+				WidgetTemplate template = optTemplate.get();
+				switch (template.getType()) {
+				case ALERT:
+					w = alertWidgetDAO.findByTemplateId(id);
+					break;
+				case BUTTON:
+					w = buttonWidgetDAO.findByTemplateId(id);
+					break;
+				case CHART:
+					w = chartWidgetDAO.findByTemplateId(id);
+					break;
+				case SLIDER:
+					w = sliderWidgetDAO.findByTemplateId(id);
+					break;
+				case SWITCH:
+					w = switchWidgetDAO.findByTemplateId(id);
+					break;
+				default:
+					break;
+				}
+				widgets.add(w);
+			}
 		}
 
-		return alerts;
-	}
-
-	@Override
-	public Set<ChartWidget> getChartWidgets(long[] ids) {
-		Set<ChartWidget> charts = new HashSet<>();
-
-		for (long id : ids) {
-			ChartWidget c = chartWidgetDAO.findByTemplateId(id);
-			charts.add(c);
-		}
-
-		return charts;
+		return widgets;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -167,16 +196,16 @@ public class WidgetManagerImpl implements WidgetManager {
 				if (optTemplate.isPresent()) {
 					WidgetTemplate template = optTemplate.get();
 					List<Integer> value = new ArrayList<>();
-					if (template.getType().equals("alert")) {
+					if (template.getType().equals(ALERT)) {
 						AlertWidget a = alertWidgetDAO.findByTemplateId(template.getId());
-						if (a.getDataMode().equals("local")) {
-							m = dataClass.getDeclaredMethod(a.getUrl());
+						if (template.getDataMode().equals("local")) {
+							m = dataClass.getDeclaredMethod(template.getUrl());
 							value = (List<Integer>) m.invoke(dataObject);
 						}
-					} else if (template.getType().equals("chart")) {
+					} else if (template.getType().equals(CHART)) {
 						ChartWidget c = chartWidgetDAO.findByTemplateId(template.getId());
-						if (c.getDataMode().equals("local")) {
-							m = dataClass.getDeclaredMethod(c.getUrl());
+						if (template.getDataMode().equals("local")) {
+							m = dataClass.getDeclaredMethod(template.getUrl());
 							value = (List<Integer>) m.invoke(dataObject);
 						}
 					}
@@ -192,28 +221,22 @@ public class WidgetManagerImpl implements WidgetManager {
 	}
 
 	@Override
-	public AlertWidget getAlertWidget(long templateId) {
-		return alertWidgetDAO.findByTemplateId(templateId);
-	}
-
-	@Override
-	public ButtonWidget getButtonWidget(long templateId) {
-		return buttonWidgetDAO.findByTemplateId(templateId);
-	}
-
-	@Override
-	public ChartWidget getChartWidget(long templateId) {
-		return chartWidgetDAO.findByTemplateId(templateId);
-	}
-
-	@Override
-	public SliderWidget getSliderWidget(long templateId) {
-		return sliderWidgetDAO.findByTemplateId(templateId);
-	}
-
-	@Override
-	public SwitchWidget getSwitchWidget(long templateId) {
-		return switchWidgetDAO.findByTemplateId(templateId);
+	public AbstractWidget getWidget(long templateId, String type) {
+		switch (type) {
+		case ALERT:
+			return alertWidgetDAO.findByTemplateId(templateId);
+		case BUTTON:
+			return buttonWidgetDAO.findByTemplateId(templateId);
+		case CHART:
+			return chartWidgetDAO.findByTemplateId(templateId);
+		case SLIDER:
+			return sliderWidgetDAO.findByTemplateId(templateId);
+		case SWITCH:
+			return switchWidgetDAO.findByTemplateId(templateId);
+		default:
+			break;
+		}
+		return null;
 	}
 
 	@Override
@@ -224,6 +247,104 @@ public class WidgetManagerImpl implements WidgetManager {
 	@Override
 	public List<EditWidgetMetadata> getAllEditWidgetMetadata() {
 		return new ArrayList<>((Collection<? extends EditWidgetMetadata>) editWidgetMetadataDAO.findAll());
+	}
+
+	@Override
+	public boolean saveWidget(AbstractWidgetDTO widget) {
+		try {
+
+			widget.setTemplate(widgetTemplateDAO.save(widget.getTemplate()));
+
+			Widget w = widgetDAO.findByTemplateId(widget.getTemplate().getId());
+			if (w != null) {
+				w.setRows(widget.getTemplate().getRows());
+				w.setCols(widget.getTemplate().getCols());
+				widgetDAO.save(w);
+			}
+
+			switch (widget.getTemplate().getType()) {
+			case ALERT:
+				AlertWidget a = new AlertWidget();
+				a.setId(widget.getId());
+				a.setTemplate(widget.getTemplate());
+				a.setRefreshTime(widget.getRefreshTime());
+				a.setLow(widget.getLow());
+				a.setHigh(widget.getHigh());
+				alertWidgetDAO.save(a);
+				return true;
+			case BUTTON:
+				ButtonWidget b = new ButtonWidget();
+				b.setId(widget.getId());
+				b.setTemplate(widget.getTemplate());
+				buttonWidgetDAO.save(b);
+				return true;
+			case CHART:
+				ChartWidget c = new ChartWidget();
+				c.setId(widget.getId());
+				c.setTemplate(widget.getTemplate());
+				c.setChartType(widget.getChartType());
+				c.setRefreshTime(widget.getRefreshTime());
+				chartWidgetDAO.save(c);
+				return true;
+			case SLIDER:
+				SliderWidget s = new SliderWidget();
+				s.setId(widget.getId());
+				s.setTemplate(widget.getTemplate());
+				s.setMin(widget.getMin());
+				s.setMax(widget.getMax());
+				sliderWidgetDAO.save(s);
+				return true;
+			case SWITCH:
+				SwitchWidget sw = new SwitchWidget();
+				sw.setId(widget.getId());
+				sw.setTemplate(widget.getTemplate());
+				switchWidgetDAO.save(sw);
+				return true;
+			default:
+				break;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean deleteWidget(long templateId) {
+		try {
+			Optional<WidgetTemplate> optTemplate = widgetTemplateDAO.findById(templateId);
+			if (optTemplate.isPresent()) {
+				WidgetTemplate template = optTemplate.get();
+
+				widgetDAO.deleteByTemplateId(templateId);
+
+				switch (template.getType()) {
+				case ALERT:
+					alertWidgetDAO.deleteByTemplateId(templateId);
+					break;
+				case BUTTON:
+					buttonWidgetDAO.deleteByTemplateId(templateId);
+					break;
+				case CHART:
+					chartWidgetDAO.deleteByTemplateId(templateId);
+					break;
+				case SLIDER:
+					sliderWidgetDAO.deleteByTemplateId(templateId);
+					break;
+				case SWITCH:
+					switchWidgetDAO.deleteByTemplateId(templateId);
+					break;
+				default:
+					break;
+				}
+				widgetTemplateDAO.deleteById(templateId);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 }
