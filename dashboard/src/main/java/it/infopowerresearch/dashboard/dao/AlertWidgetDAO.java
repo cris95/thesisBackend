@@ -5,7 +5,7 @@ import javax.transaction.Transactional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import it.infopowerresearch.dashboard.bean.AlertWidget;
+import it.infopowerresearch.dashboard.beans.AlertWidget;
 
 @Repository
 public interface AlertWidgetDAO extends CrudRepository<AlertWidget, Long> {

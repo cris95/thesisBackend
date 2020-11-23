@@ -1,4 +1,4 @@
-package it.infopowerresearch.dashboard.bean;
+package it.infopowerresearch.dashboard.beans;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -6,8 +6,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "switch_widgets")
-public class SwitchWidget extends AbstractWidget {
+@Table(name = "button_widgets")
+public class ButtonWidget extends AbstractWidget {
 
 	private static final long serialVersionUID = 1L;
 

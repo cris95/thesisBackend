@@ -5,7 +5,7 @@ import java.util.Set;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import it.infopowerresearch.dashboard.bean.Dashboard;
+import it.infopowerresearch.dashboard.beans.Dashboard;
 
 @Repository
 public interface DashboardDAO extends CrudRepository<Dashboard, Long> {

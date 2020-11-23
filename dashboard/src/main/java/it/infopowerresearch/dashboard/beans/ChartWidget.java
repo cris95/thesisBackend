@@ -1,4 +1,6 @@
-package it.infopowerresearch.dashboard.bean;
+package it.infopowerresearch.dashboard.beans;
+
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -7,31 +9,21 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "alert_widgets")
-public class AlertWidget extends AbstractWidget {
+@Table(name = "chart_widgets")
+public class ChartWidget extends AbstractWidget {
 
 	private static final long serialVersionUID = 1L;
 
-	private int high;
-
-	private int low;
+	private String chartType;
 
 	private int refreshTime;
 	
-	public int getHigh() {
-		return high;
+	public String getChartType() {
+		return chartType;
 	}
 
-	public void setHigh(int high) {
-		this.high = high;
-	}
-
-	public int getLow() {
-		return low;
-	}
-
-	public void setLow(int low) {
-		this.low = low;
+	public void setChartType(String chartType) {
+		this.chartType = chartType;
 	}
 
 	public int getRefreshTime() {
@@ -59,7 +51,5 @@ public class AlertWidget extends AbstractWidget {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
 
 }

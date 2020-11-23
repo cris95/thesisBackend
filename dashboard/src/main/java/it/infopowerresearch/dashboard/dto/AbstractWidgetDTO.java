@@ -1,6 +1,6 @@
 package it.infopowerresearch.dashboard.dto;
 
-import it.infopowerresearch.dashboard.bean.WidgetTemplate;
+import it.infopowerresearch.dashboard.beans.WidgetTemplate;
 
 public class AbstractWidgetDTO {
 

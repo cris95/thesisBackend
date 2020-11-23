@@ -4,7 +4,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.data.repository.CrudRepository;
 
-import it.infopowerresearch.dashboard.bean.SliderWidget;
+import it.infopowerresearch.dashboard.beans.SliderWidget;
 
 public interface SliderWidgetDAO extends CrudRepository<SliderWidget, Long> {
 

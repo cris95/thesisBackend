@@ -4,7 +4,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.data.repository.CrudRepository;
 
-import it.infopowerresearch.dashboard.bean.SwitchWidget;
+import it.infopowerresearch.dashboard.beans.SwitchWidget;
 
 public interface SwitchWidgetDAO extends CrudRepository<SwitchWidget, Long> {
 

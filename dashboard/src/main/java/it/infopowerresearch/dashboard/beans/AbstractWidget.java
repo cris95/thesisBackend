@@ -1,4 +1,4 @@
-package it.infopowerresearch.dashboard.bean;
+package it.infopowerresearch.dashboard.beans;
 
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;

@@ -1,4 +1,4 @@
-package it.infopowerresearch.dashboard.controller;
+package it.infopowerresearch.dashboard.controllers;
 
 import java.util.List;
 import java.util.Map;
@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.infopowerresearch.dashboard.bean.AbstractWidget;
-import it.infopowerresearch.dashboard.bean.Dashboard;
-import it.infopowerresearch.dashboard.bean.EditWidgetMetadata;
-import it.infopowerresearch.dashboard.bean.User;
-import it.infopowerresearch.dashboard.bean.WidgetTemplate;
+import it.infopowerresearch.dashboard.beans.AbstractWidget;
+import it.infopowerresearch.dashboard.beans.Dashboard;
+import it.infopowerresearch.dashboard.beans.EditWidgetMetadata;
+import it.infopowerresearch.dashboard.beans.User;
+import it.infopowerresearch.dashboard.beans.WidgetTemplate;
 import it.infopowerresearch.dashboard.dto.AbstractWidgetDTO;
 import it.infopowerresearch.dashboard.managers.DashboardManager;
 import it.infopowerresearch.dashboard.managers.UserManager;

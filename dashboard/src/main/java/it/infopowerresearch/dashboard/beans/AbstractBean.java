@@ -1,4 +1,4 @@
-package it.infopowerresearch.dashboard.bean;
+package it.infopowerresearch.dashboard.beans;
 
 import java.io.Serializable;
 

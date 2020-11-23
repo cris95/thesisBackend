@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import it.infopowerresearch.dashboard.bean.AbstractWidget;
-import it.infopowerresearch.dashboard.bean.AlertWidget;
-import it.infopowerresearch.dashboard.bean.ButtonWidget;
-import it.infopowerresearch.dashboard.bean.ChartWidget;
-import it.infopowerresearch.dashboard.bean.EditWidgetMetadata;
-import it.infopowerresearch.dashboard.bean.SliderWidget;
-import it.infopowerresearch.dashboard.bean.SwitchWidget;
-import it.infopowerresearch.dashboard.bean.WidgetTemplate;
+import it.infopowerresearch.dashboard.beans.AbstractWidget;
+import it.infopowerresearch.dashboard.beans.AlertWidget;
+import it.infopowerresearch.dashboard.beans.ButtonWidget;
+import it.infopowerresearch.dashboard.beans.ChartWidget;
+import it.infopowerresearch.dashboard.beans.EditWidgetMetadata;
+import it.infopowerresearch.dashboard.beans.SliderWidget;
+import it.infopowerresearch.dashboard.beans.SwitchWidget;
+import it.infopowerresearch.dashboard.beans.WidgetTemplate;
 import it.infopowerresearch.dashboard.dto.AbstractWidgetDTO;
 
 public interface WidgetManager {

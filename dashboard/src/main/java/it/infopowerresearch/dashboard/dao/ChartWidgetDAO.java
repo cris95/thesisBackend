@@ -4,8 +4,8 @@ import javax.transaction.Transactional;
 
 import org.springframework.data.repository.CrudRepository;
 
-import it.infopowerresearch.dashboard.bean.ButtonWidget;
-import it.infopowerresearch.dashboard.bean.ChartWidget;
+import it.infopowerresearch.dashboard.beans.ButtonWidget;
+import it.infopowerresearch.dashboard.beans.ChartWidget;
 
 public interface ChartWidgetDAO extends CrudRepository<ChartWidget, Long> {
 

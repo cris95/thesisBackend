@@ -1,4 +1,4 @@
-package it.infopowerresearch.dashboard.controller;
+package it.infopowerresearch.dashboard.controllers;
 
 import java.util.List;
 import java.util.Map;

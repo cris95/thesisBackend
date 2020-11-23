@@ -1,6 +1,6 @@
 package it.infopowerresearch.dashboard.managers;
 
-import it.infopowerresearch.dashboard.bean.User;
+import it.infopowerresearch.dashboard.beans.User;
 
 public interface UserManager {
 

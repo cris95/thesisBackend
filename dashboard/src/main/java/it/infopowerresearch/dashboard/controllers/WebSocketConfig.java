@@ -1,4 +1,4 @@
-package it.infopowerresearch.dashboard.controller;
+package it.infopowerresearch.dashboard.controllers;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

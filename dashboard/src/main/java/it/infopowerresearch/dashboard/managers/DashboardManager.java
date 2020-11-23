@@ -2,9 +2,9 @@ package it.infopowerresearch.dashboard.managers;
 
 import java.util.Set;
 
-import it.infopowerresearch.dashboard.bean.Dashboard;
-import it.infopowerresearch.dashboard.bean.Widget;
-import it.infopowerresearch.dashboard.bean.WidgetTemplate;
+import it.infopowerresearch.dashboard.beans.Dashboard;
+import it.infopowerresearch.dashboard.beans.Widget;
+import it.infopowerresearch.dashboard.beans.WidgetTemplate;
 
 public interface DashboardManager {
 

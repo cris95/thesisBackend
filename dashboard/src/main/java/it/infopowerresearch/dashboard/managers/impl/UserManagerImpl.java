@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import it.infopowerresearch.dashboard.bean.User;
+import it.infopowerresearch.dashboard.beans.User;
 import it.infopowerresearch.dashboard.dao.UserDAO;
 import it.infopowerresearch.dashboard.managers.UserManager;
 

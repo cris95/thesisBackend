@@ -4,7 +4,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.data.repository.CrudRepository;
 
-import it.infopowerresearch.dashboard.bean.ButtonWidget;
+import it.infopowerresearch.dashboard.beans.ButtonWidget;
 
 public interface ButtonWidgetDAO extends CrudRepository<ButtonWidget, Long> {
 
